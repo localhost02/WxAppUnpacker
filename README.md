@@ -1,92 +1,39 @@
-# MyWxAppUnpacker
 
-![版本 0.3](https://img.shields.io/badge/版本-0.3-red.svg) ![支持的微信版本 >20180111](https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1%E7%89%88%E6%9C%AC-%3E=20180111-brightgreen.svg)
+# 说明
+- 来自网友基于 [wxappUnpacker](https://github.com/qwerty472123/wxappUnpacker "wxappUnpacker") 改进的开源项目。
 
-> Wechat App(微信小程序, .wxapkg)解包及相关文件(.wxss, .json, .wxs, .wxml)还原工具
-
-## 1. 说明
-
-- 本文是基于 [wxappUnpacker](https://github.com/qwerty472123/wxappUnpacker "wxappUnpacker") 创作的。
-> - [x] 修复 “ReferenceError: $gwx is not defined” 和 extract wxss 等问题
-> - [x] 支持分包
-> - [x] 支持一键解包
-> - [x] 支持一键安装各种依赖
-
-一键匹配、统计文本中的内容，请下载 [calcwords](https://github.com/larack8/calcwords "calcwords") 。
-
-### 2. wxapkg 包的获取
-
-Android 手机最近使用过的微信小程序所对应的 wxapkg 包文件都存储在特定文件夹下，可通过以下命令查看：
-
-    adb pull /data/data/com.tencent.mm/MicroMsg/{User}/appbrand/pkg ./
-
-其中`{User}` 为当前用户的用户名，类似于 `2bc**************b65`。
-
-## 3. 用法
-
-用法分 mac 和 windows，请根据系统来操作
-
-### 1. for Mac OS (Mac操作系统)
-
-- 安装npm和node
-
-```bash
-./install.sh -npm
+# 安装
+```
+npm install
 ```
 
-- 安装依赖
-
-```bash
-./install.sh
+# 安装依赖
+```
+npm install esprima
+    
+npm install css-tree
+    
+npm install cssbeautify
+    
+npm install vm2
+    
+npm install uglify-es
+    
+npm install js-beautify
 ```
 
-- 解包某个小程序
-
-```bash
-./de_miniapp.sh  -d 小程序包路径(.wxapkg格式)
-```
-
-- 一键解文件夹下所有小程序
-
-```bash
-./de_miniapp.sh  小程序包所在文件夹
-```
-
-- 一键解当前文件夹下所有小程序
-
-```bash
-./de_miniapp.sh
-```
-
-** 举例
-
-Mac OS
-```bash
-./de_miniapp.sh -d ./testpkg/_-751579163_42.wxapkg
-```
-
-![解包后的目录文件](testpkg/testdir.png)
-
-### 2. for 通用操作系统（Windows 和 Mac）
-
-- 解包某个小程序
-
-```bash
-node wuWxapkg.js 小程序包路径(.wxapkg格式)
-```
-
-** 举例
-
-```bash
-node wuWxapkg.js testpkg\_-751579163_42.wxapkg
-```
-
-- 分包功能
+# 分包功能
 
 当检测到 wxapkg 为子包时, 添加-s 参数指定主包源码路径即可自动将子包的 wxss,wxml,js 解析到主包的对应位置下. 完整流程大致如下: 
 1. 获取主包和若干子包
-2. 解包主包 `./bingo.sh testpkg/master-xxx.wxapkg`
-3. 解包子包 `./bingo.sh testpkg/sub-1-xxx.wxapkg -s=../master-xxx`
+2. 解包主包  
+    - windows系统使用: `./bingo.bat testpkg/master-xxx.wxapkg`
+    - Linux系统使用: `./bingo.sh testpkg/master-xxx.wxapkg`
+3. 解包子包  
+    - windows系统使用: `./bingo.bat testpkg/sub-1-xxx.wxapkg -s=../master-xxx`
+    - Linux系统使用:  `./bingo.sh testpkg/sub-1-xxx.wxapkg -s=../master-xxx`
+
+觉得麻烦?可以使用[自助解包客户端](#自助解包客户端)
 
 TIP
 > -s 参数可为相对路径或绝对路径, 推荐使用绝对路径, 因为相对路径的起点不是当前目录 而是子包解包后的目录
@@ -101,30 +48,39 @@ TIP
 │       ├── app.json
 ```
 
-### 4. 提取统计WXSS或者其他样式
+# 公众号
+<img src="geek_road.jpg" alt="公众号" height="145" />  
 
-`详情参照` [calcwords](https://github.com/larack8/calcwords "calcwords")
+# 逆向教程小程序
+<img src="http://cdn.xuedingmiao.com/nxjc.jpg" alt="逆向教程" height="185" />  
 
-1. 下载calcwords源码
+# 自助解包客户端
+[基于electron-vue开发的微信小程序自助解包(反编译)客户端](https://github.com/xuedingmiaojun/mp-unpack)
 
-```bash
-git clone https://github.com/larack8/calcwords
-```
+# [小程序逆向视频专栏](https://m.lizhiweike.com/channel2/1037814)
+- 还是不知道怎么逆向？
+- 遇到问题不会处理？  
 
-2. 设置统计的.wxapkg路径和输入结果路径，调用 calcWxssStyle
+快来看看视频系列课程吧~    
+[人人都能学会的微信小程序逆向技能](https://m.lizhiweike.com/channel2/1037814)
 
-```bash
-	public static void testCalcWords() throws IOException {
-		String fromFilePath = "/Users/Shared/my_git/java/CalcWords/testletters/";
-		String resultFilePath = "/Users/Shared/my_git/java/CalcWords/result.txt";
+# 逆向疑难小程序
+- [逆向喜茶Go](https://www.bilibili.com/video/BV1Lv411a73w/)
 
-		calcWxssStyle(fromFilePath, resultFilePath);// 统计微信小程序源码WWXSS样式
-//		calcWxssProperty(fromFilePath, resultFilePath);// 统计微信小程序源码WXSS属性
-	}
-```
+# 项目推荐
+### [微信小程序多端实时运行工具](https://github.com/wetools/wept)
+> WEPT项目从最近到后续即将升级WEPT2.0版本，支持运行微信小程序 小游戏基础库2.9后版本功能，同时支持实现ios Android三端统一运行环境，欢迎大家持续关注
 
-3. 打开输出结果文件
+- WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
+- 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
+- 支持iOS Android Mac, Window 以及 Linux
 
-如下图样式
+#### 实现微信小程序最新运行环境
 
-![输出结果文件](testpkg/cc.png)
+- [实现小程序编译和运行环境系列(一)](https://mp.weixin.qq.com/s/OjW7GYrNSq-5ojGC3Qa83g)
+- [实现小程序编译和运行环境系列(二)](https://mp.weixin.qq.com/s/f6onZC8AWyqg7GL-e0pFXw)
+- [实现小程序编译和运行环境系列(三)](https://mp.weixin.qq.com/s/p9xhv1wxhERAn3LlsFVxHA)
+- [实现小程序编译和运行环境系列(四)](https://mp.weixin.qq.com/s/StENBEoEIl2_9PrQYl5xkg)
+- [实现小程序编译和运行环境系列(五)](https://mp.weixin.qq.com/s/FMrmmAZoayld19WKW75hyQ)
+- [实现小程序编译和运行环境系列(终)](https://mp.weixin.qq.com/s/go4imhKuAXv808c52UyiNg)
+- [如何深入分析小程序运行原理？](https://mp.weixin.qq.com/s/ZbUFogydJ1d1wGKIjzc21Q)
